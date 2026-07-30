@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Custom Google Search</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f5f5f5;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+form{
+    width:min(440px,90vw);
+    background:#fff;
+    padding:24px;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,.12);
+}
+
+h1{
+    margin:0 0 20px;
+    text-align:center;
+    font-size:1.6rem;
+}
+
+label{
+    display:block;
+    margin:14px 0 6px;
+    font-weight:bold;
+}
+
+input[type="text"],
+select{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+}
+
+.options{
+    margin-top:18px;
+}
+
+.options label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:8px 0;
+    font-weight:normal;
+}
+
+button{
+    width:100%;
+    margin-top:20px;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    background:#4285F4;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#3367d6;
+}
+</style>
+
+</head>
+<body>
+
+<form id="searchForm">
+
+    <h1>My Custom Google Search</h1>
+
+    <label for="q">Buscar</label>
+    <input
+        type="text"
+        id="q"
+        placeholder="Texto a buscar">
+
+    <label for="site">Sitio web</label>
+    <input
+        type="text"
+        id="site"
+        placeholder="ejemplo.com">
+
+    <label for="filetype">Tipo de archivo</label>
+    <select id="filetype">
+        <option value="">Cualquiera</option>
+        <option value="pdf">PDF</option>
+        <option value="doc">DOC</option>
+        <option value="docx">DOCX</option>
+        <option value="xls">XLS</option>
+        <option value="xlsx">XLSX</option>
+        <option value="ppt">PPT</option>
+        <option value="pptx">PPTX</option>
+        <option value="txt">TXT</option>
+        <option value="csv">CSV</option>
+        <option value="zip">ZIP</option>
+        <option value="rar">RAR</option>
+		<option value="mp3">MP3</option>
+		<option value="flac">FLAC</option>
+    </select>
+
+    <div class="options">
+
+        <label>
+            <input
+                type="checkbox"
+                id="udm"
+                checked>
+            Resultados web clásicos (udm=14)
+        </label>
+
+        <label>
+            <input
+                type="checkbox"
+                id="pws"
+                checked>
+            Sin personalización (pws=0)
+        </label>
+
+    </div>
+
+    <button type="submit">
+        Buscar en Google
+    </button>
+
+</form>
+
+<script>
+document.getElementById("searchForm").addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const text = document.getElementById("q").value.trim();
+    const site = document.getElementById("site").value.trim();
+    const filetype = document.getElementById("filetype").value;
+
+    if(!text && !site){
+        alert("Introduce un texto a buscar o un sitio web.");
+        return;
+    }
+
+    let query = "";
+
+    if(text){
+        query += text;
+    }
+
+    if(site){
+        query += (query ? " " : "") + "site:" + site;
+    }
+
+    if(filetype){
+        query += " filetype:" + filetype;
+    }
+
+    const params = new URLSearchParams();
+
+    params.set("q", query);
+
+    if(document.getElementById("udm").checked){
+        params.set("udm", "14");
+    }
+
+    if(document.getElementById("pws").checked){
+        params.set("pws", "0");
+    }
+
+    window.location.href = "https://www.google.com/search?" + params.toString();
+
+});
+</script>
+
+</body>
+</html>
